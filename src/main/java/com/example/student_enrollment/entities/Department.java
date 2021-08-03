@@ -1,5 +1,7 @@
 package com.example.student_enrollment.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -13,10 +15,12 @@ public class Department {
     private String name;
 
 
-    @OneToMany(mappedBy = "department")
-    private List<User> user;
-    //map course
-    // How dept id in constructor?
+    @OneToMany(mappedBy = "departmentUser", fetch = FetchType.LAZY)
+   private List<User> user;
+
+    @OneToMany(mappedBy = "department", fetch = FetchType.LAZY)
+    private List<Course> coursesList;
+
     public List<User> getUser() {
         return user;
     }
@@ -29,6 +33,11 @@ public class Department {
 
     }
     public Department(String name) {
+        this.name = name;
+    }
+
+    public Department(long id, String name) {
+        this.id = id;
         this.name = name;
     }
 

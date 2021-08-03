@@ -7,7 +7,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class StudentEnrollmentApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(StudentEnrollmentApplication.class, args);
+        try{
+            SpringApplication.run(StudentEnrollmentApplication.class, args);
+        } catch (Throwable e) {
+            System.out.println("FATAL ERROR - Build NOT Successful: terminating Spring application");
+            System.out.println(e);
+        }
     }
 
 }

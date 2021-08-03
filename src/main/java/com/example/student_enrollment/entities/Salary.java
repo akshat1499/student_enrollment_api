@@ -16,7 +16,7 @@ public class Salary {
     private int amount;
 
     @ManyToOne()
-    @JoinColumn(name="user_id")
+    @JoinColumn(name="usertable_id")
     private User user;
 
     public Salary(){

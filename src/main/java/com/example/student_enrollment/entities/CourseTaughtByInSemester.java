@@ -2,7 +2,7 @@ package com.example.student_enrollment.entities;
 import javax.persistence.*;
 
 @Entity
-@Table(name ="semester_course_user")
+@Table(name ="semester_course_usertable")
 public class CourseTaughtByInSemester {
     @Id
     @GeneratedValue
@@ -17,7 +17,7 @@ public class CourseTaughtByInSemester {
     private Course courseSCU;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "usertable_id")
     private User userSCU;
 
 }
