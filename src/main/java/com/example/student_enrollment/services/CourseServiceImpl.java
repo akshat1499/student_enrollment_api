@@ -1,8 +1,14 @@
 package com.example.student_enrollment.services;
 
 import com.example.student_enrollment.entities.Course;
+import com.example.student_enrollment.entities.Department;
 import com.example.student_enrollment.exceptions.CourseNotFoundException;
+import com.example.student_enrollment.exceptions.DepartmentNotFoundException;
+import com.example.student_enrollment.exceptions.UserNotFoundException;
+import com.example.student_enrollment.pojos.CoursePOJO;
 import com.example.student_enrollment.repositories.CourseRepository;
+import com.example.student_enrollment.repositories.DepartmentRepository;
+import com.example.student_enrollment.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +18,10 @@ public class CourseServiceImpl implements CourseService{
 
     @Autowired
     private CourseRepository courseRepository;
+    @Autowired
+    private DepartmentRepository departmentRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public List<Course> getAllCourses() {
@@ -24,22 +34,35 @@ public class CourseServiceImpl implements CourseService{
     }
 
     @Override
-    public Course updateCourse(Course newCourse, Long id) {
+    public Course updateCourse(CoursePOJO newCourse, Long id) {
         return courseRepository.findById(id)
                 .map(course -> {
                     course.setName(newCourse.getName());
                     course.setFee(newCourse.getFee());
-                    //course.setDepartment(newCourse.getDepartment());
+                   // course.setInstructor(userRepository.findById(newCourse.getInstId()).orElseThrow(()-> new UserNotFoundException(newCourse.getInstId())));
+                    course.setDepartment(departmentRepository.findById(newCourse.getDeptId()).orElseThrow(()-> new DepartmentNotFoundException(newCourse.getDeptId())));
                     return courseRepository.save(course);
                 })
                 .orElseGet(() -> {
-                    newCourse.setId(id);
-                    return courseRepository.save(newCourse);
+                    Course course = new Course();
+                    course.setFee(newCourse.getFee());
+                    course.setName(newCourse.getName());
+                    course.setDepartment(departmentRepository.findById(newCourse.getDeptId()).orElseThrow(() -> new DepartmentNotFoundException(newCourse.getDeptId())));
+                    //course.setInstructor(userRepository.findById(newCourse.getInstId()).orElseThrow(()-> new UserNotFoundException(newCourse
+                    //.getInstId())));
+                    return courseRepository.save(course);
+
                 });
     }
 
     @Override
-    public Course saveCourse(Course course) {
+    public Course saveCourse(CoursePOJO newCourse) {
+        Course course = new Course();
+        course.setFee(newCourse.getFee());
+        course.setName(newCourse.getName());
+        course.setDepartment(departmentRepository.findById(newCourse.getDeptId()).orElseThrow(() -> new DepartmentNotFoundException(newCourse.getDeptId())));
+        //course.setInstructor(userRepository.findById(newCourse.getInstId()).orElseThrow(()-> new UserNotFoundException(newCourse
+        //.getInstId())));
         return courseRepository.save(course);
     }
 
@@ -48,12 +71,5 @@ public class CourseServiceImpl implements CourseService{
         courseRepository.deleteById(id);
     }
 
-    @Override
-    public void setDepartmentById(long courseId, long deptId) {
-         courseRepository.findById(courseId).map(course -> {
-             course.setDepartmentById(deptId);
-                     return null;
-                 }
-         ).orElseThrow(()-> new CourseNotFoundException(courseId));
-    }
+
 }

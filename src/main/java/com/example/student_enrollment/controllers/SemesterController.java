@@ -1,6 +1,7 @@
 package com.example.student_enrollment.controllers;
 
 import com.example.student_enrollment.entities.Semester;
+import com.example.student_enrollment.pojos.SemesterPOJO;
 import com.example.student_enrollment.services.SemesterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -20,7 +21,7 @@ public class SemesterController {
     }
 
     @PostMapping("/semesters")
-    Semester newSemester(@RequestBody Semester newSemester) {
+    Semester newSemester(@RequestBody SemesterPOJO newSemester) {
         return semesterService.saveSemester(newSemester);
     }
 
@@ -30,14 +31,20 @@ public class SemesterController {
         return semesterService.getSemesterById(id);
     }
 
-    @PutMapping("/semesters/{id}")
-    Semester replaceSemester(@RequestBody Semester newSemester, @PathVariable Long id) {
+    @PutMapping("/semesters/courses/{id}")
+    Semester registerCourseInSemester(@RequestBody List<Long> courseList, @PathVariable Long id) {
 
-        return semesterService.updateSemester(newSemester,id);
+        return semesterService.registerCourses(courseList,id);
+    }
+
+    @PutMapping("/semesters/users/{id}")
+    Semester registerUsersInSemester(@RequestBody List<Long> userList, @PathVariable Long id) {
+
+        return semesterService.registerUsers(userList,id);
     }
 
     @DeleteMapping("/semesters/{id}")
-    void deleteEmployee(@PathVariable Long id) {
+    void deleteSemester(@PathVariable Long id) {
         semesterService.deleteSemesterById(id);
     }
 

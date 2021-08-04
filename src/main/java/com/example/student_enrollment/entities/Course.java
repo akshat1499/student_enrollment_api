@@ -8,32 +8,40 @@ import java.util.List;
 public class Course {
     @Id
     @GeneratedValue
-    private long id;
+    private Long id;
     private String name;
-    private int fee;
+    private Long fee;
 
-    public long getId() {
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "usertable_id")
+    private User instructor;
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinColumn(name="department_id")
+    private Department department;
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "coursesOffered")
+    List<Semester> semesterList;
+
+    public User getInstructor() {
+        return instructor;
+    }
+
+    public void setInstructor(User instructor) {
+        this.instructor = instructor;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
-    }
-
-    public Course(String name, int fee) {
-
-        this.name = name;
-        this.fee = fee;
-
-    }
-
-    public Course(){
-
-    }
-    public Course(String name, int fee, Department department) {
-        this.name = name;
-        this.fee = fee;
-        this.department = department;
     }
 
     public String getName() {
@@ -44,20 +52,16 @@ public class Course {
         this.name = name;
     }
 
-    public int getFee() {
+    public Long getFee() {
         return fee;
     }
 
-    public void setFee(int fee) {
+    public void setFee(Long fee) {
         this.fee = fee;
     }
 
     public Department getDepartment() {
         return department;
-    }
-
-    public void setDepartmentById(long deptId) {
-        this.department.setId(deptId);
     }
 
     public List<Semester> getSemesterList() {
@@ -68,21 +72,14 @@ public class Course {
         this.semesterList = semesterList;
     }
 
-    public List<CourseTaughtByInSemester> getCourseTaughtByInSemesters() {
-        return courseTaughtByInSemesters;
-    }
+//    public List<CourseTaughtByInSemester> getCourseTaughtByInSemesters() {
+//        return courseTaughtByInSemesters;
+//    }
 
-    public void setCourseTaughtByInSemesters(List<CourseTaughtByInSemester> courseTaughtByInSemesters) {
-        this.courseTaughtByInSemesters = courseTaughtByInSemesters;
-    }
+//    public void setCourseTaughtByInSemesters(List<CourseTaughtByInSemester> courseTaughtByInSemesters) {
+//        this.courseTaughtByInSemesters = courseTaughtByInSemesters;
+//    }
 
-    @ManyToOne()
-    @JoinColumn(name="department_id")
-    private Department department;
-
-    @ManyToMany(mappedBy = "coursesOffered")
-    List<Semester> semesterList;
-
-    @OneToMany(mappedBy = "courseSCU", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private List<CourseTaughtByInSemester> courseTaughtByInSemesters;
+//    @OneToMany(mappedBy = "courseSCU", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+//    private List<CourseTaughtByInSemester> courseTaughtByInSemesters;
 }

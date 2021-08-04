@@ -1,4 +1,8 @@
-package com.example.student_enrollment.entities;
+package com.example.student_enrollment.archived;
+import com.example.student_enrollment.entities.Course;
+import com.example.student_enrollment.entities.Semester;
+import com.example.student_enrollment.entities.User;
+
 import javax.persistence.*;
 
 @Entity

@@ -2,6 +2,7 @@ package com.example.student_enrollment.services;
 
 import com.example.student_enrollment.entities.Course;
 import com.example.student_enrollment.exceptions.CourseNotFoundException;
+import com.example.student_enrollment.pojos.CoursePOJO;
 
 
 import java.util.List;
@@ -11,11 +12,10 @@ public interface CourseService {
 
     public Course getCourseById(Long id) throws CourseNotFoundException;
 
-    public Course updateCourse(Course newCourse, Long id);
+    public Course updateCourse(CoursePOJO newCourse, Long id);
 
-    public Course saveCourse(Course course);
+    public Course saveCourse(CoursePOJO newCourse);
 
     public void  deleteCourseById(long id);
 
-    public void setDepartmentById(long courseId, long deptId) throws CourseNotFoundException;
 }

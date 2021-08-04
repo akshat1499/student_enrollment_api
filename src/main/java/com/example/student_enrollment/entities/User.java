@@ -1,5 +1,6 @@
 package com.example.student_enrollment.entities;
 
+import com.example.student_enrollment.utillities.Status;
 import com.example.student_enrollment.utillities.UserRole;
 
 import javax.persistence.*;
@@ -12,15 +13,15 @@ public class User {
 
     @Id
     @GeneratedValue
-    private long id;
+    private Long id;
     private String name;
     private Date dob;
     private String address;
-    private int contact;
+    private String contact;
     private UserRole role;
     private Date joinDate;
     private Date leaveDate;
-    private String status;
+    private Status status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="department_id")
@@ -30,6 +31,8 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Salary> salaries;
 
+    @OneToMany(mappedBy = "instructor")
+    private List<Course> courses;
 
     //only applicable for user_role=students
     @ManyToMany
@@ -41,8 +44,8 @@ public class User {
 
 
 
-    @OneToMany(mappedBy = "userSCU", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private List<CourseTaughtByInSemester> courseTaughtByInSemesters;
+//    @OneToMany(mappedBy = "userSCU", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+//    private List<CourseTaughtByInSemester> courseTaughtByInSemesters;
 
 
     public Department getDepartmentUser() {
@@ -53,9 +56,6 @@ public class User {
         this.departmentUser = department;
     }
 
-    public User(){
-
-    }
 
     public List<Salary> getSalaries() {
         return salaries;
@@ -73,31 +73,19 @@ public class User {
         this.semestersEnrolledByUser = semestersEnrolledByUser;
     }
 
-    public List<CourseTaughtByInSemester> getCourseTaughtByInSemesters() {
-        return courseTaughtByInSemesters;
+    public List<Course> getCourses() {
+        return courses;
     }
 
-    public void setCourseTaughtByInSemesters(List<CourseTaughtByInSemester> courseTaughtByInSemesters) {
-        this.courseTaughtByInSemesters = courseTaughtByInSemesters;
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
     }
 
-    public User(String name, Date dob, String address, int contact, UserRole role, Date joinDate, Date leaveDate, String status, Department departmentUser) {
-        this.name = name;
-        this.dob= dob;
-        this.address = address;
-        this.contact = contact;
-        this.role = role;
-        this.joinDate = joinDate;
-        this.leaveDate = leaveDate;
-        this.status = status;
-        this.departmentUser = departmentUser;
-    }
-
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -125,11 +113,11 @@ public class User {
         this.address = address;
     }
 
-    public int getContact() {
+    public String getContact() {
         return contact;
     }
 
-    public void setContact(int contact) {
+    public void setContact(String contact) {
         this.contact = contact;
     }
 
@@ -157,11 +145,18 @@ public class User {
         this.leaveDate = leaveDate;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
+    //    public List<CourseTaughtByInSemester> getCourseTaughtByInSemesters() {
+//        return courseTaughtByInSemesters;
+//    }
+//
+//    public void setCourseTaughtByInSemesters(List<CourseTaughtByInSemester> courseTaughtByInSemesters) {
+//        this.courseTaughtByInSemesters = courseTaughtByInSemesters;
+//    }
 }

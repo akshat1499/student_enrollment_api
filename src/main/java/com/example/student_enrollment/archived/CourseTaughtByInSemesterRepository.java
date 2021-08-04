@@ -1,6 +1,6 @@
-package com.example.student_enrollment.repositories;
+package com.example.student_enrollment.archived;
 
-import com.example.student_enrollment.entities.CourseTaughtByInSemester;
+import com.example.student_enrollment.archived.CourseTaughtByInSemester;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

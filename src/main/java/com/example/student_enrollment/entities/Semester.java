@@ -13,7 +13,18 @@ public class Semester {
     private long id;
     private String name;
 
+    private Date startDate;
+    private Date endDate;
 
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinTable(
+            name = "semester_course",
+            joinColumns = @JoinColumn(name = "semester_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id"))
+    List<Course> coursesOffered;
+
+    @ManyToMany(mappedBy = "semestersEnrolledByUser")
+    List<User> usersRegisteredInSemester;
 
     public String getName() {
         return name;
@@ -23,6 +34,19 @@ public class Semester {
         this.name = name;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Semester(String name, Date startDate, Date endDate) {
+        this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+    public Semester(){
+
+    }
 
     public List<Course> getCoursesOffered() {
         return coursesOffered;
@@ -39,17 +63,9 @@ public class Semester {
     public void setUsersRegisteredInSemester(List<User> usersRegisteredInSemester) {
         this.usersRegisteredInSemester = usersRegisteredInSemester;
     }
-
-    public List<CourseTaughtByInSemester> getCourseTaughtByInSemesters() {
-        return courseTaughtByInSemesters;
+    public long getId() {
+        return id;
     }
-
-    public void setCourseTaughtByInSemesters(List<CourseTaughtByInSemester> courseTaughtByInSemesters) {
-        this.courseTaughtByInSemesters = courseTaughtByInSemesters;
-    }
-
-    private Date startDate;
-    private Date endDate;
 
     public Date getStartDate() {
         return startDate;
@@ -67,25 +83,15 @@ public class Semester {
         this.endDate = endDate;
     }
 
-    @ManyToMany
-    @JoinTable(
-            name = "semester_course",
-            joinColumns = @JoinColumn(name = "semester_id"),
-            inverseJoinColumns = @JoinColumn(name = "course_id"))
-    List<Course> coursesOffered;
+//    public List<CourseTaughtByInSemester> getCourseTaughtByInSemesters() {
+//        return courseTaughtByInSemesters;
+//    }
+//
+//    public void setCourseTaughtByInSemesters(List<CourseTaughtByInSemester> courseTaughtByInSemesters) {
+//        this.courseTaughtByInSemesters = courseTaughtByInSemesters;
+//    }
+//    @OneToMany(mappedBy = "semesterSCU", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+//    private List<CourseTaughtByInSemester> courseTaughtByInSemesters;
 
-    @ManyToMany(mappedBy = "semestersEnrolledByUser")
-    List<User> usersRegisteredInSemester;
 
-
-    @OneToMany(mappedBy = "semesterSCU", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private List<CourseTaughtByInSemester> courseTaughtByInSemesters;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 }

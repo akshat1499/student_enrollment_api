@@ -38,7 +38,7 @@ public class DepartmentController {
     }
 
     @DeleteMapping("/departments/{id}")
-    void deleteEmployee(@PathVariable Long id) {
+    void deleteDepartment(@PathVariable Long id) {
         departmentService.deleteDepartmentById(id);
     }
 }

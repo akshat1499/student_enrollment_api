@@ -1,7 +1,9 @@
 package com.example.student_enrollment.controllers;
 
 import com.example.student_enrollment.entities.Salary;
+import com.example.student_enrollment.pojos.SalaryPOJO;
 import com.example.student_enrollment.services.SalaryService;
+import com.example.student_enrollment.utillities.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +21,7 @@ public class SalaryController {
     }
 
     @PostMapping("/salaries")
-    Salary newSalary(@RequestBody Salary newSalary) {
+    Salary newSalary(@RequestBody SalaryPOJO newSalary) {
         return salaryService.saveSalary(newSalary);
     }
 
@@ -29,14 +31,14 @@ public class SalaryController {
         return salaryService.getSalaryById(id);
     }
 
-    @PutMapping("/salaries/{id}")
-    Salary replaceSalary(@RequestBody Salary newSalary, @PathVariable Long id) {
+    @PutMapping("/salaries/status/{id}")
+    Salary replaceSalary(@RequestBody Status newStatus, @PathVariable Long id) {
 
-        return salaryService.updateSalary(newSalary,id);
+        return salaryService.updateSalaryStatus(newStatus,id);
     }
 
     @DeleteMapping("/salaries/{id}")
-    void deleteEmployee(@PathVariable Long id) {
+    void deleteSalary(@PathVariable Long id) {
         salaryService.deleteSalaryById(id);
     }
 }

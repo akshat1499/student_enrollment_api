@@ -1,21 +1,15 @@
-package com.example.student_enrollment.entities;
+package com.example.student_enrollment.pojos;
 
 import com.example.student_enrollment.utillities.Status;
 
-import javax.persistence.*;
 import java.util.Date;
 
-@Entity
-@Table(name = "salary")
-public class Salary {
-
-    @Id
-    @GeneratedValue
-    private long id;
+public class SalaryPOJO {
     private Date created;
     private Date periodFrom;
     private Date periodTo;
     private Long amount;
+    private Long userId;
     private Status status;
 
     public Status getStatus() {
@@ -24,30 +18,6 @@ public class Salary {
 
     public void setStatus(Status status) {
         this.status = status;
-    }
-
-    @ManyToOne()
-    @JoinColumn(name="usertable_id")
-    private User user;
-
-    public Salary(){
-
-    }
-
-    public Salary(Date created, Date periodFrom, Date periodTo, Long amount) {
-        this.created = created;
-        this.periodFrom = periodFrom;
-        this.periodTo = periodTo;
-        this.amount = amount;
-
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public Date getCreated() {
@@ -82,11 +52,11 @@ public class Salary {
         this.amount = amount;
     }
 
-    public User getUser() {
-        return user;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }
