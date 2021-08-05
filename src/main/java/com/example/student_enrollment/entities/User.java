@@ -2,6 +2,7 @@ package com.example.student_enrollment.entities;
 
 import com.example.student_enrollment.utillities.Status;
 import com.example.student_enrollment.utillities.UserRole;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Entity
 @Table(name="usertable")
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 public class User {
 
     @Id
@@ -25,21 +27,25 @@ public class User {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="department_id")
+    @JsonIgnoreProperties({"user", "coursesList"})
     private Department departmentUser;
 
 
     @OneToMany(mappedBy = "user")
+    @JsonIgnoreProperties("user")
     private List<Salary> salaries;
 
     @OneToMany(mappedBy = "instructor")
+    @JsonIgnoreProperties({"instructor","department","semesterList"})
     private List<Course> courses;
 
     //only applicable for user_role=students
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.DETACH,CascadeType.PERSIST})
     @JoinTable(
             name = "usertable_semester",
             joinColumns = @JoinColumn(name = "usertable_id"),
             inverseJoinColumns = @JoinColumn(name = "semester_id"))
+    @JsonIgnoreProperties({"coursesOffered","usersRegisteredInSemester"})
     List<Semester> semestersEnrolledByUser;
 
 

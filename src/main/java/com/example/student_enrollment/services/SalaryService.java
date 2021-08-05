@@ -22,5 +22,9 @@ public interface SalaryService {
     public Salary saveSalary(SalaryPOJO newSalary);
 
     void  deleteSalaryById(long id);
+
+    public List<Salary> getTop2ByOrderByAmountAsc();
+
+    public List<Salary> getTop2ByOrderByAmountDesc();
     
 }

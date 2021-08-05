@@ -12,18 +12,11 @@ public class UserPOJO {
     private String contact;
     private UserRole role;
     private Date joinDate;
-    private Date leaveDate;
     private Status status;
     private Long deptId;
-    private Long semesterId;
 
-    public Long getSemesterId() {
-        return semesterId;
-    }
 
-    public void setSemesterId(Long semesterId) {
-        this.semesterId = semesterId;
-    }
+
 
     public UserRole getRole() {
         return role;
@@ -81,14 +74,6 @@ public class UserPOJO {
 
     public void setJoinDate(Date joinDate) {
         this.joinDate = joinDate;
-    }
-
-    public Date getLeaveDate() {
-        return leaveDate;
-    }
-
-    public void setLeaveDate(Date leaveDate) {
-        this.leaveDate = leaveDate;
     }
 
     public Long getDeptId() {

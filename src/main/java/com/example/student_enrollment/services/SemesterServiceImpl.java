@@ -4,10 +4,13 @@ import com.example.student_enrollment.entities.Course;
 import com.example.student_enrollment.entities.Semester;
 import com.example.student_enrollment.entities.User;
 import com.example.student_enrollment.exceptions.SemesterNotFoundException;
+import com.example.student_enrollment.exceptions.StudentNotFoundException;
+import com.example.student_enrollment.exceptions.UserNotFoundException;
 import com.example.student_enrollment.pojos.SemesterPOJO;
 import com.example.student_enrollment.repositories.CourseRepository;
 import com.example.student_enrollment.repositories.SemesterRepository;
 import com.example.student_enrollment.repositories.UserRepository;
+import com.example.student_enrollment.utillities.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -66,8 +69,9 @@ public class SemesterServiceImpl implements SemesterService {
             courseIdList.forEach(courseId ->{
                 newCoursesToAdd.add(courseRepository.getById(courseId));
             });
-            newCoursesToAdd.addAll(semester.getCoursesOffered());
-            semester.setCoursesOffered(newCoursesToAdd);
+            //newCoursesToAdd.addAll(semester.getCoursesOffered());
+            //semester.setCoursesOffered(newCoursesToAdd);
+            semester.getCoursesOffered().addAll(newCoursesToAdd);
             return semesterRepository.save(semester);
         }).orElseThrow(()-> new SemesterNotFoundException(semesterId));
 
@@ -78,7 +82,11 @@ public class SemesterServiceImpl implements SemesterService {
         return semesterRepository.findById(semesterId).map(semester -> {
             List<User> newUsersToAdd = new ArrayList<>();
             userIdList.forEach(userId ->{
-                newUsersToAdd.add(userRepository.getById(userId));
+                User user = userRepository.findById(userId).orElseThrow(()->new UserNotFoundException(userId));
+                if(user.getRole()!= UserRole.STUDENT)
+                    throw new StudentNotFoundException(userId);
+
+                newUsersToAdd.add(user);
             });
 
             newUsersToAdd.addAll(semester.getUsersRegisteredInSemester());

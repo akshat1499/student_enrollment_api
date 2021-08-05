@@ -1,12 +1,14 @@
 package com.example.student_enrollment.entities;
 
 import com.example.student_enrollment.utillities.Status;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "salary")
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 public class Salary {
 
     @Id
@@ -26,19 +28,21 @@ public class Salary {
         this.status = status;
     }
 
-    @ManyToOne()
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.DETACH})
     @JoinColumn(name="usertable_id")
+    @JsonIgnoreProperties({"departmentUser","salaries","courses","semestersEnrolledByUser"})
     private User user;
 
     public Salary(){
 
     }
 
-    public Salary(Date created, Date periodFrom, Date periodTo, Long amount) {
+    public Salary(Date created, Date periodFrom, Date periodTo, Long amount,Status status) {
         this.created = created;
         this.periodFrom = periodFrom;
         this.periodTo = periodTo;
         this.amount = amount;
+        this.status=status;
 
     }
 

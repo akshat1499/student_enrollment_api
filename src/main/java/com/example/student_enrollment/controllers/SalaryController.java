@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RestController
 public class SalaryController {
     @Autowired
     @Qualifier("salaryService")
@@ -26,15 +27,27 @@ public class SalaryController {
     }
 
 
+
     @GetMapping("/salaries/{id}")
     Salary one(@PathVariable Long id) {
         return salaryService.getSalaryById(id);
     }
 
-    @PutMapping("/salaries/status/{id}")
-    Salary replaceSalary(@RequestBody Status newStatus, @PathVariable Long id) {
 
-        return salaryService.updateSalaryStatus(newStatus,id);
+    @GetMapping("/salaries/top2/asc")
+    List<Salary> top2asc() {
+        return salaryService.getTop2ByOrderByAmountAsc();
+    }
+
+    @GetMapping("/salaries/top2/desc")
+    List<Salary> top2desc() {
+        return salaryService.getTop2ByOrderByAmountDesc();
+    }
+
+    @PutMapping("/salaries/status/{id}")
+    Salary replaceSalary(@RequestBody Integer newStatus, @PathVariable Long id) {
+
+        return salaryService.updateSalaryStatus(Status.values()[newStatus],id);
     }
 
     @DeleteMapping("/salaries/{id}")

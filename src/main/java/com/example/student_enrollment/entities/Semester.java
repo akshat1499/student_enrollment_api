@@ -1,5 +1,7 @@
 package com.example.student_enrollment.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -7,6 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(name="semester")
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 public class Semester {
     @Id
     @GeneratedValue
@@ -16,14 +19,16 @@ public class Semester {
     private Date startDate;
     private Date endDate;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST,CascadeType.DETACH})
     @JoinTable(
             name = "semester_course",
             joinColumns = @JoinColumn(name = "semester_id"),
             inverseJoinColumns = @JoinColumn(name = "course_id"))
+    @JsonIgnoreProperties({"instructor","department","semesterList"})
     List<Course> coursesOffered;
 
-    @ManyToMany(mappedBy = "semestersEnrolledByUser")
+    @ManyToMany(mappedBy = "semestersEnrolledByUser", fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST, CascadeType.DETACH})
+    @JsonIgnoreProperties({"semestersEnrolledByUser","departmentUser","salaries","courses"})
     List<User> usersRegisteredInSemester;
 
     public String getName() {

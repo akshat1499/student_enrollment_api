@@ -52,12 +52,8 @@ public class UserServiceImpl implements UserService {
         user.setContact(newUser.getContact());
         user.setRole(newUser.getRole());
         user.setJoinDate(newUser.getJoinDate());
-        user.setLeaveDate(newUser.getLeaveDate());
         user.setStatus(newUser.getStatus());
         user.setDepartmentUser(departmentRepository.findById(newUser.getDeptId()).orElseThrow(()-> new DepartmentNotFoundException(newUser.getDeptId())));
-        List<Semester> sems = new ArrayList<>();
-        sems.add(semesterRepository.getById(newUser.getSemesterId()));
-        user.setSemestersEnrolledByUser(sems);
         return userRepository.save(user);
     }
 

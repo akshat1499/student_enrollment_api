@@ -33,7 +33,6 @@ public class SemesterController {
 
     @PutMapping("/semesters/courses/{id}")
     Semester registerCourseInSemester(@RequestBody List<Long> courseList, @PathVariable Long id) {
-
         return semesterService.registerCourses(courseList,id);
     }
 

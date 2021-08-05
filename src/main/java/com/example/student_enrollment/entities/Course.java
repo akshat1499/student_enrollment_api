@@ -1,10 +1,13 @@
 package com.example.student_enrollment.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name="course")
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 public class Course {
     @Id
     @GeneratedValue
@@ -15,6 +18,7 @@ public class Course {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "usertable_id")
+    @JsonIgnoreProperties({"departmentUser","salaries","courses","semestersEnrolledByUser"})
     private User instructor;
 
     public void setDepartment(Department department) {
@@ -23,9 +27,10 @@ public class Course {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name="department_id")
+    @JsonIgnoreProperties({"user","coursesList"})
     private Department department;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "coursesOffered")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "coursesOffered", cascade = {CascadeType.DETACH, CascadeType.PERSIST})
     List<Semester> semesterList;
 
     public User getInstructor() {

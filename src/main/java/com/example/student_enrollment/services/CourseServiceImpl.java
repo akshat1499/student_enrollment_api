@@ -1,7 +1,6 @@
 package com.example.student_enrollment.services;
 
 import com.example.student_enrollment.entities.Course;
-import com.example.student_enrollment.entities.Department;
 import com.example.student_enrollment.exceptions.CourseNotFoundException;
 import com.example.student_enrollment.exceptions.DepartmentNotFoundException;
 import com.example.student_enrollment.exceptions.UserNotFoundException;
@@ -39,7 +38,7 @@ public class CourseServiceImpl implements CourseService{
                 .map(course -> {
                     course.setName(newCourse.getName());
                     course.setFee(newCourse.getFee());
-                   // course.setInstructor(userRepository.findById(newCourse.getInstId()).orElseThrow(()-> new UserNotFoundException(newCourse.getInstId())));
+                    course.setInstructor(userRepository.findById(newCourse.getInstId()).orElseThrow(()-> new UserNotFoundException(newCourse.getInstId())));
                     course.setDepartment(departmentRepository.findById(newCourse.getDeptId()).orElseThrow(()-> new DepartmentNotFoundException(newCourse.getDeptId())));
                     return courseRepository.save(course);
                 })
@@ -48,8 +47,8 @@ public class CourseServiceImpl implements CourseService{
                     course.setFee(newCourse.getFee());
                     course.setName(newCourse.getName());
                     course.setDepartment(departmentRepository.findById(newCourse.getDeptId()).orElseThrow(() -> new DepartmentNotFoundException(newCourse.getDeptId())));
-                    //course.setInstructor(userRepository.findById(newCourse.getInstId()).orElseThrow(()-> new UserNotFoundException(newCourse
-                    //.getInstId())));
+                    course.setInstructor(userRepository.findById(newCourse.getInstId()).orElseThrow(()-> new UserNotFoundException(newCourse
+                    .getInstId())));
                     return courseRepository.save(course);
 
                 });
@@ -61,8 +60,8 @@ public class CourseServiceImpl implements CourseService{
         course.setFee(newCourse.getFee());
         course.setName(newCourse.getName());
         course.setDepartment(departmentRepository.findById(newCourse.getDeptId()).orElseThrow(() -> new DepartmentNotFoundException(newCourse.getDeptId())));
-        //course.setInstructor(userRepository.findById(newCourse.getInstId()).orElseThrow(()-> new UserNotFoundException(newCourse
-        //.getInstId())));
+        course.setInstructor(userRepository.findById(newCourse.getInstId()).orElseThrow(()-> new UserNotFoundException(newCourse
+        .getInstId())));
         return courseRepository.save(course);
     }
 
