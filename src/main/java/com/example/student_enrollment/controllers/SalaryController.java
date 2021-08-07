@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class SalaryController {
@@ -34,15 +35,11 @@ public class SalaryController {
     }
 
 
-    @GetMapping("/salaries/top2/asc")
-    List<Salary> top2asc() {
-        return salaryService.getTop2ByOrderByAmountAsc();
+    @GetMapping("/salaries/top")
+    List<Salary> topn(@RequestParam Integer n, @RequestParam Integer order) {
+        return salaryService.getTopByAmount(n,order);
     }
 
-    @GetMapping("/salaries/top2/desc")
-    List<Salary> top2desc() {
-        return salaryService.getTop2ByOrderByAmountDesc();
-    }
 
     @PutMapping("/salaries/status/{id}")
     Salary replaceSalary(@RequestBody Integer newStatus, @PathVariable Long id) {

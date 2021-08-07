@@ -8,6 +8,7 @@ import com.example.student_enrollment.pojos.SalaryPOJO;
 import com.example.student_enrollment.utillities.Status;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.Order;
 import java.util.List;
 
 @Service("salaryService")
@@ -23,8 +24,7 @@ public interface SalaryService {
 
     void  deleteSalaryById(long id);
 
-    public List<Salary> getTop2ByOrderByAmountAsc();
+    public List<Salary> getTopByAmount(Integer n,Integer order);
 
-    public List<Salary> getTop2ByOrderByAmountDesc();
-    
+
 }

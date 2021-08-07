@@ -4,13 +4,14 @@ import com.example.student_enrollment.utillities.Status;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name="department")
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
-public class Department {
+public class Department implements Serializable {
 
     //TODO: Department Status and created at and all classes extends Time class
     @Id

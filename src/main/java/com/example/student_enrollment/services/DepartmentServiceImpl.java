@@ -4,6 +4,7 @@ import com.example.student_enrollment.entities.Department;
 import com.example.student_enrollment.exceptions.DepartmentNotFoundException;
 import com.example.student_enrollment.repositories.DepartmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class DepartmentServiceImpl implements DepartmentService{
     }
 
     @Override
+    @Cacheable(key = "#id")
     public Department getDepartmentById(Long id) throws DepartmentNotFoundException {
         return departmentRepository.findById(id).orElseThrow(()-> new DepartmentNotFoundException(id));
     }

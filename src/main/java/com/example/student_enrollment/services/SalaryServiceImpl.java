@@ -9,13 +9,15 @@ import com.example.student_enrollment.exceptions.UserNotFoundException;
 import com.example.student_enrollment.pojos.SalaryPOJO;
 import com.example.student_enrollment.repositories.SalaryRepository;
 import com.example.student_enrollment.repositories.UserRepository;
+import com.example.student_enrollment.utillities.SortDirection;
 import com.example.student_enrollment.utillities.Status;
 import com.example.student_enrollment.utillities.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import javax.management.relation.Role;
+import java.awt.print.Pageable;
 import java.util.List;
 
 @Service("salaryService")
@@ -61,14 +63,19 @@ public class SalaryServiceImpl implements SalaryService{
         salaryRepository.deleteById(id);
     }
 
-    @Override
-    public List<Salary> getTop2ByOrderByAmountAsc() {
-        return salaryRepository.findTop2ByOrderByAmountAsc();
-    }
 
     @Override
-    public List<Salary> getTop2ByOrderByAmountDesc() {
-        return salaryRepository.findTop2ByOrderByAmountDesc();
+    public List<Salary> getTopByAmount(Integer n, Integer order) {
+        Sort.Direction direction;
+        if(order==0)
+            direction= Sort.Direction.ASC;
+        else
+            direction= Sort.Direction.DESC;
+
+        List<Salary> s=salaryRepository.findAll(Sort.by(direction,"amount"));
+        n= Math.min(n,s.size());
+
+        return s.subList(0,n);
     }
 }
 

@@ -13,7 +13,7 @@ public class SalaryNotFoundAdvice {
     @ResponseBody
     @ExceptionHandler(SalaryNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String salaryNotFoundHandler(DepartmentNotFoundException ex) {
+    String salaryNotFoundHandler(SalaryNotFoundException ex) {
         return ex.getMessage();
     }
 }

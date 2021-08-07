@@ -89,8 +89,9 @@ public class SemesterServiceImpl implements SemesterService {
                 newUsersToAdd.add(user);
             });
 
-            newUsersToAdd.addAll(semester.getUsersRegisteredInSemester());
-            semester.setUsersRegisteredInSemester(newUsersToAdd);
+            //newUsersToAdd.addAll(semester.getUsersRegisteredInSemester());
+            //semester.setUsersRegisteredInSemester(newUsersToAdd);
+            semester.getUsersRegisteredInSemester().addAll(newUsersToAdd);
             return semesterRepository.save(semester);
         }).orElseThrow(()-> new SemesterNotFoundException(semesterId));
 
