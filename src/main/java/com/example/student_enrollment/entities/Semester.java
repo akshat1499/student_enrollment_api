@@ -1,6 +1,8 @@
 package com.example.student_enrollment.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -19,6 +21,11 @@ public class Semester {
     private Date startDate;
     private Date endDate;
 
+    @CreationTimestamp
+    private Date createdOn;
+    @UpdateTimestamp
+    private Date updatedOn;
+
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST,CascadeType.DETACH})
     @JoinTable(
             name = "semester_course",
@@ -28,7 +35,8 @@ public class Semester {
     List<Course> coursesOffered;
 
     @ManyToMany(mappedBy = "semestersEnrolledByUser", fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST, CascadeType.DETACH})
-    @JsonIgnoreProperties({"semestersEnrolledByUser","departmentUser","salaries","courses"})
+    @JsonIgnoreProperties({"departmentUser","salaries","courses"})
+    //SEMESTERENROLLEBUSER
     List<User> usersRegisteredInSemester;
 
     public String getName() {
@@ -87,16 +95,6 @@ public class Semester {
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
-
-//    public List<CourseTaughtByInSemester> getCourseTaughtByInSemesters() {
-//        return courseTaughtByInSemesters;
-//    }
-//
-//    public void setCourseTaughtByInSemesters(List<CourseTaughtByInSemester> courseTaughtByInSemesters) {
-//        this.courseTaughtByInSemesters = courseTaughtByInSemesters;
-//    }
-//    @OneToMany(mappedBy = "semesterSCU", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-//    private List<CourseTaughtByInSemester> courseTaughtByInSemesters;
 
 
 }

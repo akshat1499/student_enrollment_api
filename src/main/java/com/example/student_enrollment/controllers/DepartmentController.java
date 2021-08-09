@@ -1,6 +1,7 @@
 package com.example.student_enrollment.controllers;
 
 import com.example.student_enrollment.entities.Department;
+import com.example.student_enrollment.pojos.DepartmentPOJO;
 import com.example.student_enrollment.services.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -23,8 +24,8 @@ public class DepartmentController {
     }
 
     @PostMapping("/departments")
-    Department newDepartment(@RequestBody Department newDepartment) {
-        return departmentService.saveDepartment(newDepartment);
+    Department newDepartment(@RequestBody DepartmentPOJO newDepartment) {
+        return departmentService.saveDepartment(newDepartment );
     }
 
 
@@ -36,8 +37,8 @@ public class DepartmentController {
 
     @PutMapping("/departments/{id}")
     @CachePut(value = "dept-single", key = "#id")
-    public Department replaceDepartment(@RequestBody Department newDepartment, @PathVariable Long id) {
-
+    public Department replaceDepartment(@RequestBody DepartmentPOJO newDepartment, @PathVariable Long id) {
+        //Todo: Add validation if recieve empty Json request
         return departmentService.updateDepartment(newDepartment,id);
     }
 

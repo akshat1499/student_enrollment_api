@@ -1,8 +1,12 @@
 package com.example.student_enrollment.entities;
 
+import com.example.student_enrollment.utillities.Status;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -14,6 +18,13 @@ public class Course {
     private Long id;
     private String name;
     private Long fee;
+    private Status status;
+
+    @CreationTimestamp
+    private Date createdOn;
+    @UpdateTimestamp
+    private Date updatedOn;
+
 
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -77,14 +88,25 @@ public class Course {
         this.semesterList = semesterList;
     }
 
-//    public List<CourseTaughtByInSemester> getCourseTaughtByInSemesters() {
-//        return courseTaughtByInSemesters;
-//    }
+    public Status getStatus() {
+        return status;
+    }
 
-//    public void setCourseTaughtByInSemesters(List<CourseTaughtByInSemester> courseTaughtByInSemesters) {
-//        this.courseTaughtByInSemesters = courseTaughtByInSemesters;
-//    }
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 
-//    @OneToMany(mappedBy = "courseSCU", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-//    private List<CourseTaughtByInSemester> courseTaughtByInSemesters;
+    public void setUpdatedOn(Date updatedOn) {
+        this.updatedOn = updatedOn;
+    }
+
+    public Date getCreatedOn() {
+        return createdOn;
+    }
+
+    public Date getUpdatedOn() {
+        return updatedOn;
+    }
+
+
 }

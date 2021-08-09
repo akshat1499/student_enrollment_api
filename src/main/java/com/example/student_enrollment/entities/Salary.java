@@ -1,7 +1,10 @@
 package com.example.student_enrollment.entities;
 
+import com.example.student_enrollment.pojos.SalaryPOJO;
 import com.example.student_enrollment.utillities.Status;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -14,11 +17,15 @@ public class Salary {
     @Id
     @GeneratedValue
     private long id;
-    private Date created;
     private Date periodFrom;
     private Date periodTo;
     private Long amount;
     private Status status;
+
+    @CreationTimestamp
+    private Date createdOn;
+    @UpdateTimestamp
+    private Date updatedOn;
 
     public Status getStatus() {
         return status;
@@ -37,13 +44,10 @@ public class Salary {
 
     }
 
-    public Salary(Date created, Date periodFrom, Date periodTo, Long amount,Status status) {
-        this.created = created;
+    public Salary(Date periodFrom, Date periodTo, Long amount) {
         this.periodFrom = periodFrom;
         this.periodTo = periodTo;
         this.amount = amount;
-        this.status=status;
-
     }
 
     public long getId() {
@@ -54,12 +58,20 @@ public class Salary {
         this.id = id;
     }
 
-    public Date getCreated() {
-        return created;
+    public Date getCreatedOn() {
+        return createdOn;
     }
 
-    public void setCreated(Date created) {
-        this.created = created;
+    public void setCreatedOn(Date createdOn) {
+        this.createdOn = createdOn;
+    }
+
+    public Date getUpdatedOn() {
+        return updatedOn;
+    }
+
+    public void setUpdatedOn(Date updatedOn) {
+        this.updatedOn = updatedOn;
     }
 
     public Date getPeriodFrom() {
@@ -92,5 +104,19 @@ public class Salary {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public SalaryPOJO getSalaryPOJO(){
+        SalaryPOJO salaryPOJO = new SalaryPOJO(
+                this.periodFrom.toString(),
+                this.periodTo.toString(),
+                this.amount,
+                this.id,
+                this.status,
+                this.createdOn,
+                this.updatedOn);
+
+        return salaryPOJO;
+
     }
 }

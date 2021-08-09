@@ -18,6 +18,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import java.awt.print.Pageable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service("salaryService")
@@ -49,7 +51,15 @@ public class SalaryServiceImpl implements SalaryService{
 
     @Override
     public Salary saveSalary(SalaryPOJO newSalary) {
-        Salary salary = new Salary(newSalary.getCreated(), newSalary.getPeriodFrom(),newSalary.getPeriodTo(), newSalary.getAmount(),newSalary.getStatus());
+        SalaryPOJO.validate(newSalary);
+        Date periodFrom = new Date();
+        Date periodTo = new Date();
+
+        try{
+            periodFrom = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(newSalary.getPeriodFrom());
+            periodTo = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(newSalary.getPeriodTo());
+        }catch (Exception e){}
+        Salary salary = new Salary(periodFrom,periodTo, newSalary.getAmount());
         User newUser = userRepository.findById(newSalary.getUserId()).orElseThrow(()->new UserNotFoundException(newSalary.getUserId()));
         if(newUser.getRole()!= UserRole.LECTURER)
             throw new LecturerNotFoundException(newSalary.getUserId());

@@ -8,11 +8,16 @@ import com.example.student_enrollment.pojos.UserPOJO;
 import com.example.student_enrollment.repositories.DepartmentRepository;
 import com.example.student_enrollment.repositories.SemesterRepository;
 import com.example.student_enrollment.repositories.UserRepository;
+import com.example.student_enrollment.utillities.Status;
+import com.example.student_enrollment.utillities.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 @Service("userService")
 public class UserServiceImpl implements UserService {
@@ -45,14 +50,25 @@ public class UserServiceImpl implements UserService {
     //Role stud =0 lecturer = 1
     @Override
     public User saveUser(UserPOJO newUser) {
+
+
+        UserPOJO.validate(newUser);
+
         User user = new User();
+        Date jDate = new Date();
+        Date dob = new Date();
+
+        try{
+            jDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(newUser.getJoinDate());
+            dob = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(newUser.getDob());
+        }catch (Exception e){}
         user.setName(newUser.getName());
-        user.setDob(newUser.getDob());
+        user.setDob(dob);
         user.setAddress(newUser.getAddress());
         user.setContact(newUser.getContact());
-        user.setRole(newUser.getRole());
-        user.setJoinDate(newUser.getJoinDate());
-        user.setStatus(newUser.getStatus());
+        user.setRole(UserRole.valueOf(newUser.getRole().toUpperCase()));
+        user.setJoinDate(jDate);
+        user.setStatus(Status.ACTIVE);
         user.setDepartmentUser(departmentRepository.findById(newUser.getDeptId()).orElseThrow(()-> new DepartmentNotFoundException(newUser.getDeptId())));
         return userRepository.save(user);
     }

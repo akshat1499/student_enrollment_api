@@ -14,7 +14,9 @@ import com.example.student_enrollment.utillities.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service("semesterService")
@@ -55,8 +57,15 @@ public class SemesterServiceImpl implements SemesterService {
 
     @Override
     public Semester saveSemester(SemesterPOJO newSemester) {
+        SemesterPOJO.validate(newSemester);
+        Date startDate = new Date();
+        Date endDate= new Date();
 
-        Semester semester = new Semester(newSemester.getName(), newSemester.getStartDate(),newSemester.getEndDate());
+        try{
+            startDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(newSemester.getStartDate());
+            endDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(newSemester.getEndDate());
+        }catch (Exception e){}
+        Semester semester = new Semester(newSemester.getName(), startDate,endDate);
 
         return semesterRepository.save(semester);
     }
@@ -83,14 +92,15 @@ public class SemesterServiceImpl implements SemesterService {
             List<User> newUsersToAdd = new ArrayList<>();
             userIdList.forEach(userId ->{
                 User user = userRepository.findById(userId).orElseThrow(()->new UserNotFoundException(userId));
-                if(user.getRole()!= UserRole.STUDENT)
-                    throw new StudentNotFoundException(userId);
+//                if(user.getRole()!= UserRole.STUDENT)
+//                    throw new StudentNotFoundException(userId);
 
                 newUsersToAdd.add(user);
             });
 
             //newUsersToAdd.addAll(semester.getUsersRegisteredInSemester());
             //semester.setUsersRegisteredInSemester(newUsersToAdd);
+            System.out.println(newUsersToAdd.toString());
             semester.getUsersRegisteredInSemester().addAll(newUsersToAdd);
             return semesterRepository.save(semester);
         }).orElseThrow(()-> new SemesterNotFoundException(semesterId));

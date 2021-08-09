@@ -3,6 +3,8 @@ package com.example.student_enrollment.entities;
 import com.example.student_enrollment.utillities.Status;
 import com.example.student_enrollment.utillities.UserRole;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -25,19 +27,24 @@ public class User {
     private Date leaveDate;
     private Status status;
 
+    @CreationTimestamp
+    private Date createdOn;
+    @UpdateTimestamp
+    private Date updatedOn;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="department_id")
     @JsonIgnoreProperties({"user", "coursesList"})
     private Department departmentUser;
 
 
-    @OneToMany(mappedBy = "user")
-    @JsonIgnoreProperties("user")
-    private List<Salary> salaries;
+//    @OneToMany(mappedBy = "user")
+//    @JsonIgnoreProperties("user")
+//    private List<Salary> salaries;
 
-    @OneToMany(mappedBy = "instructor")
-    @JsonIgnoreProperties({"instructor","department","semesterList"})
-    private List<Course> courses;
+//    @OneToMany(mappedBy = "instructor")
+//    @JsonIgnoreProperties({"instructor","department","semesterList"})
+//    private List<Course> courses;
 
     //only applicable for user_role=students
     @ManyToMany(cascade = {CascadeType.DETACH,CascadeType.PERSIST})
@@ -50,8 +57,6 @@ public class User {
 
 
 
-//    @OneToMany(mappedBy = "userSCU", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-//    private List<CourseTaughtByInSemester> courseTaughtByInSemesters;
 
 
     public Department getDepartmentUser() {
@@ -63,13 +68,9 @@ public class User {
     }
 
 
-    public List<Salary> getSalaries() {
-        return salaries;
-    }
 
-    public void setSalaries(List<Salary> salaries) {
-        this.salaries = salaries;
-    }
+
+
 
     public List<Semester> getSemestersEnrolledByUser() {
         return semestersEnrolledByUser;
@@ -79,13 +80,6 @@ public class User {
         this.semestersEnrolledByUser = semestersEnrolledByUser;
     }
 
-    public List<Course> getCourses() {
-        return courses;
-    }
-
-    public void setCourses(List<Course> courses) {
-        this.courses = courses;
-    }
 
     public Long getId() {
         return id;

@@ -2,6 +2,8 @@ package com.example.student_enrollment.entities;
 
 import com.example.student_enrollment.utillities.Status;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,13 +15,24 @@ import java.util.List;
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 public class Department implements Serializable {
 
-    //TODO: Department Status and created at and all classes extends Time class
     @Id
     @GeneratedValue
     private Long id;
     private String name;
     private Status status;
+
+    @CreationTimestamp
     private Date createdOn;
+    @UpdateTimestamp
+    private Date updatedOn;
+
+    public Date getUpdatedOn() {
+        return updatedOn;
+    }
+
+    public void setUpdatedOn(Date updatedOn) {
+        this.updatedOn = updatedOn;
+    }
 
     public Status getStatus() {
         return status;
@@ -37,40 +50,24 @@ public class Department implements Serializable {
         this.createdOn = createdOn;
     }
 
-    public List<Course> getCoursesList() {
-        return coursesList;
-    }
 
-    public void setCoursesList(List<Course> coursesList) {
-        this.coursesList = coursesList;
-    }
+//    @OneToMany(mappedBy = "departmentUser", fetch = FetchType.LAZY)
+//    @JsonIgnoreProperties({"departmentUser","salaries","courses","semestersEnrolledByUser"})
+//    private List<User> user;
+//
+//    @OneToMany(mappedBy = "department", fetch = FetchType.LAZY)
+//    @JsonIgnoreProperties({"instructor","department","semesterList"})
+//    private List<Course> coursesList;
 
-    @OneToMany(mappedBy = "departmentUser", fetch = FetchType.LAZY)
-    @JsonIgnoreProperties({"departmentUser","salaries","courses","semestersEnrolledByUser"})
-    private List<User> user;
 
-    @OneToMany(mappedBy = "department", fetch = FetchType.LAZY)
-    @JsonIgnoreProperties({"instructor","department","semesterList"})
-    private List<Course> coursesList;
-
-    public List<User> getUser() {
-        return user;
-    }
-
-    public void setUser(List<User> user) {
-        this.user = user;
-    }
 
     public Department(){
 
     }
-    public Department(String name) {
-        this.name = name;
-    }
 
-    public Department(long id, String name) {
-        this.id = id;
+    public Department(String name, Status status) {
         this.name = name;
+        this.status = status;
     }
 
     public Long getId() {
