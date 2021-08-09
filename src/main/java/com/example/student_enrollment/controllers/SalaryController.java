@@ -18,8 +18,11 @@ public class SalaryController {
     private SalaryService salaryService;
 
     @GetMapping("/salaries")
-    List<Salary> all(){
-        return salaryService.getAllSalaries();
+    List<Salary> all(@RequestParam(defaultValue = "0") Integer pageNo,
+                     @RequestParam(defaultValue = "3") Integer pageSize,
+                     @RequestParam(defaultValue = "amount") String sortBy,
+                     @RequestParam(defaultValue = "ASC") String sortDirection){
+        return salaryService.getAllSalaries(pageNo,pageSize,sortBy,sortDirection);
     }
 
     @PostMapping("/salaries")

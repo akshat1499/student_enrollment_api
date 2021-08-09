@@ -106,17 +106,5 @@ public class Salary {
         this.user = user;
     }
 
-    public SalaryPOJO getSalaryPOJO(){
-        SalaryPOJO salaryPOJO = new SalaryPOJO(
-                this.periodFrom.toString(),
-                this.periodTo.toString(),
-                this.amount,
-                this.id,
-                this.status,
-                this.createdOn,
-                this.updatedOn);
 
-        return salaryPOJO;
-
-    }
 }

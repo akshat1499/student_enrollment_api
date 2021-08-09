@@ -14,13 +14,16 @@ import com.example.student_enrollment.utillities.Status;
 import com.example.student_enrollment.utillities.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import java.awt.print.Pageable;
+import org.springframework.data.domain.Pageable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 
 @Service("salaryService")
 public class SalaryServiceImpl implements SalaryService{
@@ -31,8 +34,14 @@ public class SalaryServiceImpl implements SalaryService{
     private UserRepository userRepository;
 
     @Override
-    public List<Salary> getAllSalaries() {
-        return salaryRepository.findAll();
+    public List<Salary> getAllSalaries(Integer pageNo, Integer pageSize, String sortBy,String sortDirection) {
+        Pageable paging =  PageRequest.of(pageNo,pageSize,Sort.by(Sort.Direction.valueOf(sortDirection.toUpperCase()),sortBy));
+        Page<Salary> pagedResult = salaryRepository.findAll(paging);
+        if(pagedResult.hasContent()) {
+            return pagedResult.getContent();
+        } else {
+            return new ArrayList<Salary>();
+        }
     }
 
     @Override

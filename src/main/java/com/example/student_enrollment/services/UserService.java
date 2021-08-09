@@ -7,7 +7,7 @@ import com.example.student_enrollment.pojos.UserPOJO;
 import java.util.List;
 
 public interface UserService {
-    public List<User> getAllUsers();
+    public List<User> getAllUsers(Integer pageNo, Integer pageSize, String sortBy,String sortDirection, String userRole);
 
     public User getUserById(Long id) throws UserNotFoundException;
 

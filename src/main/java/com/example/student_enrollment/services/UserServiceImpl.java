@@ -1,5 +1,6 @@
 package com.example.student_enrollment.services;
 
+import com.example.student_enrollment.entities.Salary;
 import com.example.student_enrollment.entities.Semester;
 import com.example.student_enrollment.entities.User;
 import com.example.student_enrollment.exceptions.DepartmentNotFoundException;
@@ -11,6 +12,10 @@ import com.example.student_enrollment.repositories.UserRepository;
 import com.example.student_enrollment.utillities.Status;
 import com.example.student_enrollment.utillities.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -30,8 +35,19 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private SemesterRepository semesterRepository;
     @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<User> getAllUsers(Integer pageNo, Integer pageSize, String sortBy,String sortDirection, String userRole) {
+        Pageable paging =  PageRequest.of(pageNo,pageSize, Sort.by(Sort.Direction.valueOf(sortDirection.toUpperCase()),sortBy));
+        Page<User> pagedResult;
+        if(userRole.isEmpty())
+            pagedResult=userRepository.findAll(paging);
+        else
+            return userRepository.findUserByRoleEquals(UserRole.valueOf(userRole.toUpperCase()),paging);
+
+        if(pagedResult.hasContent()) {
+            return pagedResult.getContent();
+        } else {
+            return new ArrayList<User>();
+        }
     }
 
     @Override

@@ -17,8 +17,12 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/users")
-    List<User> all(){
-        return userService.getAllUsers();
+    List<User> all(@RequestParam(defaultValue = "0") Integer pageNo,
+                   @RequestParam(defaultValue = "3") Integer pageSize,
+                   @RequestParam(defaultValue = "id") String sortBy,
+                   @RequestParam(defaultValue = "ASC") String sortDirection,
+                   @RequestParam(defaultValue = "") String userRole){
+        return userService.getAllUsers(pageNo,pageSize,sortBy,sortDirection,userRole);
     }
 
     @PostMapping("/users")

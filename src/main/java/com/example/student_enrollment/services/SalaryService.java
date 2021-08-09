@@ -14,7 +14,7 @@ import java.util.List;
 @Service("salaryService")
 public interface SalaryService {
 
-    public List<Salary> getAllSalaries();
+    public List<Salary> getAllSalaries(Integer pageNo, Integer pageSize, String sortBy, String sortDirection);
 
     public Salary getSalaryById(Long id) throws SalaryNotFoundException;
 
