@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+
 import java.util.List;
 
 @Service("departmentService")
@@ -39,7 +39,6 @@ public class DepartmentServiceImpl implements DepartmentService{
                     return departmentRepository.save(department);
                 })
                 .orElseGet(() -> {
-                    //newDepartment.setId(id);
                     Department department = new Department();
                     return departmentRepository.save(department);
                 });
@@ -47,7 +46,7 @@ public class DepartmentServiceImpl implements DepartmentService{
 
     @Override
     public Department saveDepartment(DepartmentPOJO newDepartment) {
-       DepartmentPOJO.validate(newDepartment);
+       //DepartmentPOJO.validate(newDepartment);
 
         Department department= new Department(newDepartment.getName(), Status.ACTIVE);
         return departmentRepository.save(department);

@@ -21,6 +21,7 @@ public class UserPOJO {
 
 
 
+    //ToDo: Give all errors at once
     public static void validate(UserPOJO newUser) throws InvalidValueException {
         String regex = "\\d+";
         if(newUser==null){

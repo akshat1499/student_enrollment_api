@@ -8,6 +8,10 @@ public class DepartmentPOJO {
     private String name;
     private Status status;
 
+    public DepartmentPOJO(){
+
+    }
+
     public Status getStatus() {
         return status;
     }
@@ -23,6 +27,10 @@ public class DepartmentPOJO {
             throw new InvalidValueException("name");
 
 
+    }
+
+    public DepartmentPOJO(String name) {
+        this.name = name;
     }
 
     public String getName() {

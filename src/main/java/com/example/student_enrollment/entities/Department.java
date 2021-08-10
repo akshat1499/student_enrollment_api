@@ -50,25 +50,16 @@ public class Department implements Serializable {
         this.createdOn = createdOn;
     }
 
-
-//    @OneToMany(mappedBy = "departmentUser", fetch = FetchType.LAZY)
-//    @JsonIgnoreProperties({"departmentUser","salaries","courses","semestersEnrolledByUser"})
-//    private List<User> user;
-//
-//    @OneToMany(mappedBy = "department", fetch = FetchType.LAZY)
-//    @JsonIgnoreProperties({"instructor","department","semesterList"})
-//    private List<Course> coursesList;
-
-
-
     public Department(){
 
     }
 
     public Department(String name, Status status) {
         this.name = name;
-        this.status = status;
+        this.status=status;
     }
+
+
 
     public Long getId() {
         return id;

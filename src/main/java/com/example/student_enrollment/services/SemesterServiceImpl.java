@@ -88,23 +88,42 @@ public class SemesterServiceImpl implements SemesterService {
 
     @Override
     public Semester registerUsers(List<Long> userIdList, Long semesterId) {
-        return semesterRepository.findById(semesterId).map(semester -> {
-            List<User> newUsersToAdd = new ArrayList<>();
-            userIdList.forEach(userId ->{
-                User user = userRepository.findById(userId).orElseThrow(()->new UserNotFoundException(userId));
+//        Semester newSem;
+//         semesterRepository.findById(semesterId).map(semester -> {
+//            System.out.println(semester);
+//            List<User> newUsersToAdd = new ArrayList<>();
+//            userIdList.forEach(userId ->{
+//                User user = userRepository.findById(userId).orElseThrow(()->new UserNotFoundException(userId));
 //                if(user.getRole()!= UserRole.STUDENT)
 //                    throw new StudentNotFoundException(userId);
+//
+//                newUsersToAdd.add(user);
+//            });
+//
+//            //newUsersToAdd.addAll(semester.getUsersRegisteredInSemester());
+//            //semester.setUsersRegisteredInSemester(newUsersToAdd);
+//            //System.out.println(newUsersToAdd.toString());
+//            //System.out.println(semester.getUsersRegisteredInSemester().size());
+//            semester.getUsersRegisteredInSemester().addAll(newUsersToAdd);
+//            Semester sem = semesterRepository.save(semester);
+//            System.out.println(sem);
+//            return sem;
+//        }).orElseThrow(()-> new SemesterNotFoundException(semesterId));
+
+        Semester newSem = semesterRepository.findById(semesterId).orElseThrow(() ->new SemesterNotFoundException(semesterId));
+
+        List<User> newUsersToAdd = new ArrayList<>();
+        userIdList.forEach(userId ->{
+                User user = userRepository.findById(userId).orElseThrow(()->new UserNotFoundException(userId));
+                if(user.getRole()!= UserRole.STUDENT)
+                    throw new StudentNotFoundException(userId);
 
                 newUsersToAdd.add(user);
             });
-
-            //newUsersToAdd.addAll(semester.getUsersRegisteredInSemester());
-            //semester.setUsersRegisteredInSemester(newUsersToAdd);
-            System.out.println(newUsersToAdd.toString());
-            semester.getUsersRegisteredInSemester().addAll(newUsersToAdd);
-            return semesterRepository.save(semester);
-        }).orElseThrow(()-> new SemesterNotFoundException(semesterId));
-
+        newSem.getUsersRegisteredInSemester().addAll(newUsersToAdd);
+        Semester newSem2 =semesterRepository.save(newSem);
+        System.out.println(newSem2);
+        return newSem2;
     }
 
     @Override

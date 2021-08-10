@@ -52,10 +52,8 @@ public class User {
             name = "usertable_semester",
             joinColumns = @JoinColumn(name = "usertable_id"),
             inverseJoinColumns = @JoinColumn(name = "semester_id"))
-    @JsonIgnoreProperties({"coursesOffered","usersRegisteredInSemester"})
+    @JsonIgnoreProperties({"coursesOffered"})
     List<Semester> semestersEnrolledByUser;
-
-
 
 
 
@@ -66,10 +64,6 @@ public class User {
     public void setDepartmentUser(Department department) {
         this.departmentUser = department;
     }
-
-
-
-
 
 
     public List<Semester> getSemestersEnrolledByUser() {
@@ -152,11 +146,23 @@ public class User {
     public void setStatus(Status status) {
         this.status = status;
     }
-    //    public List<CourseTaughtByInSemester> getCourseTaughtByInSemesters() {
-//        return courseTaughtByInSemesters;
-//    }
-//
-//    public void setCourseTaughtByInSemesters(List<CourseTaughtByInSemester> courseTaughtByInSemesters) {
-//        this.courseTaughtByInSemesters = courseTaughtByInSemesters;
-//    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", dob=" + dob +
+                ", address='" + address + '\'' +
+                ", contact='" + contact + '\'' +
+                ", role=" + role +
+                ", joinDate=" + joinDate +
+                ", leaveDate=" + leaveDate +
+                ", status=" + status +
+                ", createdOn=" + createdOn +
+                ", updatedOn=" + updatedOn +
+                ", departmentUser=" + departmentUser +
+                ", semestersEnrolledByUser=" + semestersEnrolledByUser +
+                '}';
+    }
 }

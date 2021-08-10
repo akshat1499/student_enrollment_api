@@ -2,13 +2,20 @@ package com.example.student_enrollment.controllers;
 
 
 import com.example.student_enrollment.entities.Course;
+import com.example.student_enrollment.exceptions.CourseNotFoundException;
+import com.example.student_enrollment.exceptions.InternalServerErrorException;
 import com.example.student_enrollment.pojos.CoursePOJO;
 import com.example.student_enrollment.services.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 @Qualifier("courseService")
@@ -17,8 +24,13 @@ public class CourseController {
     private CourseService courseService;
 
     @GetMapping("/courses")
-    List<Course> all(){
-        return courseService.getAllCourses();
+    List<Course> all() throws InternalServerErrorException {
+        try {
+            return courseService.getAllCoursesAsync().get();
+        } catch (Exception e) {
+            throw new InternalServerErrorException("Internal Server Error : Unable to find courses");
+        }
+        //return courseService.getAllCourses();
     }
 
     @PostMapping("/courses")

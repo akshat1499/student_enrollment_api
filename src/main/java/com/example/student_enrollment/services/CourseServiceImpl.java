@@ -10,9 +10,12 @@ import com.example.student_enrollment.repositories.DepartmentRepository;
 import com.example.student_enrollment.repositories.UserRepository;
 import com.example.student_enrollment.utillities.Status;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+
 @Service("courseService")
 public class CourseServiceImpl implements CourseService{
 
@@ -23,10 +26,17 @@ public class CourseServiceImpl implements CourseService{
     @Autowired
     private UserRepository userRepository;
 
+    @Async
+    @Override
+    public CompletableFuture<List<Course>> getAllCoursesAsync() {
+        return CompletableFuture.completedFuture(courseRepository.findAll());
+    }
+
     @Override
     public List<Course> getAllCourses() {
         return courseRepository.findAll();
     }
+
 
     @Override
     public Course getCourseById(Long id) throws CourseNotFoundException {

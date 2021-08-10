@@ -14,12 +14,13 @@ import java.util.List;
 @RestController
 public class DepartmentController {
 
+
     @Autowired
     @Qualifier("departmentService")
     private DepartmentService departmentService;
 
     @GetMapping("/departments")
-    List<Department> all(){
+    List<Department> getAllDepartments(){
         return departmentService.getAllDepartments();
     }
 

@@ -6,6 +6,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -34,10 +35,9 @@ public class Semester {
     @JsonIgnoreProperties({"instructor","department","semesterList"})
     List<Course> coursesOffered;
 
-    @ManyToMany(mappedBy = "semestersEnrolledByUser", fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST, CascadeType.DETACH})
+    @ManyToMany(mappedBy = "semestersEnrolledByUser", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JsonIgnoreProperties({"departmentUser","salaries","courses"})
-    //SEMESTERENROLLEBUSER
-    List<User> usersRegisteredInSemester;
+    List<User> usersRegisteredInSemester = new ArrayList<>();
 
     public String getName() {
         return name;
@@ -96,5 +96,17 @@ public class Semester {
         this.endDate = endDate;
     }
 
-
+    @Override
+    public String toString() {
+        return "Semester{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", createdOn=" + createdOn +
+                ", updatedOn=" + updatedOn +
+                ", coursesOffered=" + coursesOffered +
+                ", usersRegisteredInSemester=" + usersRegisteredInSemester +
+                '}';
+    }
 }
