@@ -10,7 +10,6 @@ import com.example.student_enrollment.repositories.DepartmentRepository;
 import com.example.student_enrollment.repositories.UserRepository;
 import com.example.student_enrollment.utillities.Status;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,7 +29,7 @@ public class CourseServiceImpl implements CourseService{
 
     @Override
     public List<Course> getAllCourses() {
-        return courseRepository.findAll();
+        return courseRepository.findCourseByStatusEquals(Status.ACTIVE);
     }
 
 
@@ -80,7 +79,9 @@ public class CourseServiceImpl implements CourseService{
 
     @Override
     public void deleteCourseById(long id) {
-        courseRepository.deleteById(id);
+        Course course =  courseRepository.findById(id).orElseThrow(()-> new CourseNotFoundException(id));
+        course.setStatus(Status.INACTIVE);
+        courseRepository.save(course);
     }
 
 

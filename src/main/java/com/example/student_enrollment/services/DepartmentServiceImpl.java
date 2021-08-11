@@ -21,12 +21,9 @@ public class DepartmentServiceImpl implements DepartmentService{
     @Autowired
     private DepartmentRepository departmentRepository;
 
-    @Autowired
-    private AsyncConfiguration asyncConfiguration;
-
     @Override
     public List<Department> getAllDepartments() {
-        return departmentRepository.findAll();
+        return departmentRepository.findDepartmentByStatusEquals(Status.ACTIVE);
     }
 
     @Override
@@ -64,6 +61,9 @@ public class DepartmentServiceImpl implements DepartmentService{
 
     @Override
     public void deleteDepartmentById(long id) {
-        departmentRepository.deleteById(id);
+        Department department= departmentRepository.findById(id).orElseThrow(()-> new DepartmentNotFoundException(id));
+        department.setStatus(Status.INACTIVE);
+        departmentRepository.save(department);
+
     }
 }

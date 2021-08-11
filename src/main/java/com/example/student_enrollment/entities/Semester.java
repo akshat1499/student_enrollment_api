@@ -1,5 +1,6 @@
 package com.example.student_enrollment.entities;
 
+import com.example.student_enrollment.utillities.Status;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -26,6 +27,8 @@ public class Semester {
     private Date createdOn;
     @UpdateTimestamp
     private Date updatedOn;
+
+    private Status status;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST,CascadeType.DETACH})
     @JoinTable(
@@ -55,6 +58,23 @@ public class Semester {
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.status = Status.ACTIVE;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public Date getCreatedOn() {
+        return createdOn;
+    }
+
+    public Date getUpdatedOn() {
+        return updatedOn;
+    }
+
+    public Status getStatus() {
+        return status;
     }
 
     public Semester(){

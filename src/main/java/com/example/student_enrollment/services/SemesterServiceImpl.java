@@ -10,6 +10,7 @@ import com.example.student_enrollment.pojos.SemesterPOJO;
 import com.example.student_enrollment.repositories.CourseRepository;
 import com.example.student_enrollment.repositories.SemesterRepository;
 import com.example.student_enrollment.repositories.UserRepository;
+import com.example.student_enrollment.utillities.Status;
 import com.example.student_enrollment.utillities.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class SemesterServiceImpl implements SemesterService {
 
     @Override
     public List<Semester> getAllSemesters() {
-        return semesterRepository.findAll();
+        return semesterRepository.findSemesterByStatusEquals(Status.ACTIVE);
     }
 
     @Override
@@ -58,8 +59,8 @@ public class SemesterServiceImpl implements SemesterService {
     @Override
     public Semester saveSemester(SemesterPOJO newSemester) {
         SemesterPOJO.validate(newSemester);
-        Date startDate = new Date();
-        Date endDate= new Date();
+        Date startDate = null;
+        Date endDate= null;
 
         try{
             startDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(newSemester.getStartDate());
@@ -128,7 +129,9 @@ public class SemesterServiceImpl implements SemesterService {
 
     @Override
     public void deleteSemesterById(long id) {
-        semesterRepository.deleteById(id);
+        Semester semester = semesterRepository.findById(id).orElseThrow(() ->new SemesterNotFoundException(id));
+        semester.setStatus(Status.INACTIVE);
+        semesterRepository.save(semester);
     }
 
 }

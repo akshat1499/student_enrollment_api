@@ -37,18 +37,27 @@ public class SalaryServiceImpl implements SalaryService{
 
     @Override
     public List<Salary> getAllSalaries(Integer pageNo, Integer pageSize, String sortBy,String sortDirection) {
-        Pageable paging =  PageRequest.of(pageNo,pageSize,Sort.by(Sort.Direction.valueOf(sortDirection.toUpperCase()),sortBy));
-        Page<Salary> pagedResult = salaryRepository.findAll(paging);
-        if(pagedResult.hasContent()) {
-            return pagedResult.getContent();
-        } else {
-            return new ArrayList<Salary>();
-        }
+//        Pageable paging =  PageRequest.of(pageNo,pageSize,Sort.by(Sort.Direction.valueOf(sortDirection.toUpperCase()),sortBy));
+//        Page<Salary> pagedResult = salaryRepository.findAll(paging);
+//        if(pagedResult.hasContent()) {
+//            return pagedResult.getContent();
+//        } else {
+//            return new ArrayList<Salary>();
+//        }
+
+        return salaryRepository.findSalaryByStatusEquals(Status.ACTIVE);
     }
 
     @Override
     public Salary getSalaryById(Long id) throws SalaryNotFoundException {
         return salaryRepository.findById(id).orElseThrow(()-> new SalaryNotFoundException(id));
+    }
+
+    @Override
+    public List<Salary> getAllSalariesByInstructorId(Long id) throws SalaryNotFoundException {
+
+
+        return salaryRepository.findSalariesByUserIdEquals(id);
     }
 
     @Override
@@ -77,27 +86,19 @@ public class SalaryServiceImpl implements SalaryService{
             throw new LecturerNotFoundException(newSalary.getUserId());
 
         salary.setUser(newUser);
+        //salary.setStatus(Status.ACTIVE);
         return salaryRepository.save(salary);
     }
 
     @Override
     public void deleteSalaryById(long id) {
-        salaryRepository.deleteById(id);
+        Salary salary = salaryRepository.findById(id).orElseThrow(()-> new SalaryNotFoundException(id));
+        salary.setStatus(Status.INACTIVE);
+        salaryRepository.save(salary);
     }
 
 
-    @Override
-    public List<Salary> getTopByAmount(Integer n, Integer order) {
-        Sort.Direction direction;
-        if(order==0)
-            direction= Sort.Direction.ASC;
-        else
-            direction= Sort.Direction.DESC;
 
-        List<Salary> s=salaryRepository.findAll(Sort.by(direction,"amount"));
-        n= Math.min(n,s.size());
 
-        return s.subList(0,n);
-    }
 }
 

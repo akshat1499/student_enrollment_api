@@ -18,13 +18,13 @@ public interface SalaryService {
 
     public Salary getSalaryById(Long id) throws SalaryNotFoundException;
 
+    public List<Salary> getAllSalariesByInstructorId(Long id) throws SalaryNotFoundException;
+
     public Salary updateSalaryStatus(Status newStatus, Long id);
 
     public Salary saveSalary(SalaryPOJO newSalary);
 
     void  deleteSalaryById(long id);
-
-    public List<Salary> getTopByAmount(Integer n,Integer order);
 
 
 }

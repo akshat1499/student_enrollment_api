@@ -24,26 +24,27 @@ public class UserPOJO {
     //ToDo: Give all errors at once
     public static void validate(UserPOJO newUser) throws InvalidValueException {
         String regex = "\\d+";
+        String error="";
         if(newUser==null){
-            throw new InvalidValueException("new user details");
+            throw new InvalidValueException("new user. No detail found");
         }
-        else if(newUser.getAddress().isEmpty())
-            throw new InvalidValueException("address");
-        else if (newUser.getContact().length()!=10 || !newUser.getContact().matches(regex)){
-            throw new InvalidValueException("contact");
+         if(newUser.getAddress().isEmpty()) error += "address, ";
+         if (newUser.getContact().length()!=10 || !newUser.getContact().matches(regex)){
+            error+="contact : only 10 digits are allowed, ";
         }
-        else if(newUser.getDeptId()<1)
-            throw new InvalidValueException("department id");
-        else if(newUser.getName().isEmpty() || newUser.getName().matches(regex) ||newUser.getName().substring(0,1).matches(regex))
-            throw new InvalidValueException("name");
-        else if(!isValidDate(newUser.getJoinDate()))
-            throw new InvalidValueException("join date in format yyyy-MM-dd HH:mm:ss");
-        else if(!isValidDate(newUser.getDob()))
-            throw new InvalidValueException("date of birth in format yyyy-MM-dd HH:mm:ss");
-        else if (!(newUser.getRole().equalsIgnoreCase("STUDENT")||
+         if(newUser.getDeptId()<1)
+            error+="department id, ";
+        if(newUser.getName().isEmpty() || newUser.getName().matches(regex) ||newUser.getName().substring(0,1).matches(regex))
+            error+="name : should not be empty or begin with a digit, ";
+        if(!isValidDate(newUser.getJoinDate()))
+            error+="join date in format yyyy-MM-dd HH:mm:ss, ";
+        if(!isValidDate(newUser.getDob()))
+            error+="date of birth in format yyyy-MM-dd HH:mm:ss, ";
+        if (!(newUser.getRole().equalsIgnoreCase("STUDENT")||
                  newUser.getRole().equalsIgnoreCase("LECTURER")))
-            throw new InvalidValueException("user role. only STUDENT and LECTURER are valid inputs");
+            error+="user role. only STUDENT and LECTURER are valid inputs.";
 
+        if(!error.isEmpty()) throw new InvalidValueException(error);
 
     }
 

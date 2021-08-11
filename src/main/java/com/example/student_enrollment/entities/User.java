@@ -32,6 +32,22 @@ public class User {
     @UpdateTimestamp
     private Date updatedOn;
 
+    public Date getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(Date createdOn) {
+        this.createdOn = createdOn;
+    }
+
+    public Date getUpdatedOn() {
+        return updatedOn;
+    }
+
+    public void setUpdatedOn(Date updatedOn) {
+        this.updatedOn = updatedOn;
+    }
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="department_id")
     @JsonIgnoreProperties({"user", "coursesList"})

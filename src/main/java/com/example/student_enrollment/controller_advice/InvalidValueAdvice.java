@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class InvalidValueAdvice {
     @ResponseBody
     @ExceptionHandler(InvalidValueException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     String invalidValueFoundHandler(InvalidValueException ex) {
         return ex.getMessage();
     }

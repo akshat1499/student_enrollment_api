@@ -1,6 +1,7 @@
 package com.example.student_enrollment.repositories;
 
 import com.example.student_enrollment.entities.User;
+import com.example.student_enrollment.utillities.Status;
 import com.example.student_enrollment.utillities.UserRole;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +12,6 @@ import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<User,Long> {
-    List<User> findUserByRoleEquals(UserRole role, Pageable paging);
-
+    Page<User> findUserByRoleEqualsAndStatusEquals(UserRole role, Status status, Pageable paging);
+    Page<User> findUserByStatusEquals(Status status, Pageable paging);
 }

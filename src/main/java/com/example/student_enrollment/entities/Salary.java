@@ -48,6 +48,7 @@ public class Salary {
         this.periodFrom = periodFrom;
         this.periodTo = periodTo;
         this.amount = amount;
+        this.status = Status.ACTIVE;
     }
 
     public long getId() {

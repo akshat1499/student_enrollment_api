@@ -32,15 +32,13 @@ public class SalaryController {
 
 
 
+    @GetMapping("/salaries/instructor/{id}")
+    List<Salary> salariesByInstructorId(@PathVariable Long id) {
+        return salaryService.getAllSalariesByInstructorId(id);
+    }
     @GetMapping("/salaries/{id}")
     Salary one(@PathVariable Long id) {
         return salaryService.getSalaryById(id);
-    }
-
-
-    @GetMapping("/salaries/top")
-    List<Salary> topn(@RequestParam Integer n, @RequestParam Integer order) {
-        return salaryService.getTopByAmount(n,order);
     }
 
 

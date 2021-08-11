@@ -39,9 +39,9 @@ public class UserServiceImpl implements UserService {
         Pageable paging =  PageRequest.of(pageNo,pageSize, Sort.by(Sort.Direction.valueOf(sortDirection.toUpperCase()),sortBy));
         Page<User> pagedResult;
         if(userRole.isEmpty())
-            pagedResult=userRepository.findAll(paging);
+            pagedResult=userRepository.findUserByStatusEquals(Status.ACTIVE,paging);
         else
-            return userRepository.findUserByRoleEquals(UserRole.valueOf(userRole.toUpperCase()),paging);
+            pagedResult= userRepository.findUserByRoleEqualsAndStatusEquals(UserRole.valueOf(userRole.toUpperCase()),Status.ACTIVE,paging);
 
         if(pagedResult.hasContent()) {
             return pagedResult.getContent();
@@ -91,7 +91,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUserById(long id) {
-        userRepository.deleteById(id);
+        User user = userRepository.findById(id).orElseThrow(()-> new UserNotFoundException(id));
+        user.setStatus(Status.INACTIVE);
+        user.setLeaveDate(new Date());
+
+        userRepository.save(user);
     }
 
 }
