@@ -20,6 +20,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
 import java.text.SimpleDateFormat;
+import java.time.Period;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -61,13 +63,14 @@ public class SalaryServiceImpl implements SalaryService{
     @Override
     public Salary saveSalary(SalaryPOJO newSalary) {
         SalaryPOJO.validate(newSalary);
-        Date periodFrom = new Date();
-        Date periodTo = new Date();
+        Date periodFrom = null;
+        Date periodTo = null;
 
         try{
             periodFrom = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(newSalary.getPeriodFrom());
             periodTo = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(newSalary.getPeriodTo());
         }catch (Exception e){}
+
         Salary salary = new Salary(periodFrom,periodTo, newSalary.getAmount());
         User newUser = userRepository.findById(newSalary.getUserId()).orElseThrow(()->new UserNotFoundException(newSalary.getUserId()));
         if(newUser.getRole()!= UserRole.LECTURER)

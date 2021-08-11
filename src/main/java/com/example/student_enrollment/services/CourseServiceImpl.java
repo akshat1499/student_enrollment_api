@@ -26,11 +26,7 @@ public class CourseServiceImpl implements CourseService{
     @Autowired
     private UserRepository userRepository;
 
-    @Async
-    @Override
-    public CompletableFuture<List<Course>> getAllCoursesAsync() {
-        return CompletableFuture.completedFuture(courseRepository.findAll());
-    }
+
 
     @Override
     public List<Course> getAllCourses() {

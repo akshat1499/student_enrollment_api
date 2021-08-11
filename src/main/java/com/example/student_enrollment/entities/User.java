@@ -37,15 +37,6 @@ public class User {
     @JsonIgnoreProperties({"user", "coursesList"})
     private Department departmentUser;
 
-
-//    @OneToMany(mappedBy = "user")
-//    @JsonIgnoreProperties("user")
-//    private List<Salary> salaries;
-
-//    @OneToMany(mappedBy = "instructor")
-//    @JsonIgnoreProperties({"instructor","department","semesterList"})
-//    private List<Course> courses;
-
     //only applicable for user_role=students
     @ManyToMany(cascade = {CascadeType.DETACH,CascadeType.PERSIST})
     @JoinTable(

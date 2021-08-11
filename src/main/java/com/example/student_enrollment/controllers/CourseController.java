@@ -25,12 +25,8 @@ public class CourseController {
 
     @GetMapping("/courses")
     List<Course> all() throws InternalServerErrorException {
-        try {
-            return courseService.getAllCoursesAsync().get();
-        } catch (Exception e) {
-            throw new InternalServerErrorException("Internal Server Error : Unable to find courses");
-        }
-        //return courseService.getAllCourses();
+
+        return courseService.getAllCourses();
     }
 
     @PostMapping("/courses")

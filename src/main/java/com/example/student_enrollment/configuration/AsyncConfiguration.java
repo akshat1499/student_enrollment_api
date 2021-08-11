@@ -17,7 +17,7 @@ public class AsyncConfiguration {
         executor.setCorePoolSize(2);
         executor.setMaxPoolSize(2);
         executor.setQueueCapacity(100);
-        executor.setThreadNamePrefix("CourseThread-");
+        executor.setThreadNamePrefix("DepartmentThread-");
         executor.initialize();
         return executor;
     }

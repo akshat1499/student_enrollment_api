@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public interface CourseService {
-    public CompletableFuture<List<Course>> getAllCoursesAsync();
+
     public List<Course> getAllCourses();
 
     public Course getCourseById(Long id) throws CourseNotFoundException;
