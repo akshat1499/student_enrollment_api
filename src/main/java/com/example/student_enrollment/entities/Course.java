@@ -25,7 +25,9 @@ public class Course {
     @UpdateTimestamp
     private Date updatedOn;
 
-
+    public void setCreatedOn(Date createdOn) {
+        this.createdOn = createdOn;
+    }
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "usertable_id")

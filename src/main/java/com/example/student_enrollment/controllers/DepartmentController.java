@@ -26,7 +26,8 @@ public class DepartmentController {
      * Returns all Departments with Status = Status.ACTIVE
      * */
     @GetMapping("/departments")
-    List<Department> getAllDepartments(){
+    //@Cacheable(value = "dept-single", key = "#id")
+    public List<Department> getAllDepartments(){
         return departmentService.getAllDepartments();
     }
 

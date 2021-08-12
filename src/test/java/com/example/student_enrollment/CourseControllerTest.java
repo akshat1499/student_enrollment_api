@@ -1,10 +1,11 @@
 package com.example.student_enrollment;
 
 
+import com.example.student_enrollment.entities.Course;
 import com.example.student_enrollment.entities.Department;
-import com.example.student_enrollment.pojos.DepartmentPOJO;
-import com.example.student_enrollment.repositories.DepartmentRepository;
-import com.example.student_enrollment.services.DepartmentService;
+import com.example.student_enrollment.pojos.CoursePOJO;
+import com.example.student_enrollment.repositories.CourseRepository;
+import com.example.student_enrollment.services.CourseService;
 import com.example.student_enrollment.utillities.DateGenerator;
 import com.example.student_enrollment.utillities.Status;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,10 +22,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
+
 
 
 import static org.hamcrest.Matchers.hasSize;
@@ -36,49 +38,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-public class DepartmentControllerTest {
+public class CourseControllerTest {
 
     private static final ObjectMapper om = new ObjectMapper();
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private DepartmentService departmentService;
+    private CourseService courseService;
 
     @MockBean
-    DepartmentRepository departmentRepository;
+    private CourseRepository courseRepository;
 
-
-    @Test
-    public void getAllDepartments_success() throws Exception{
-        Date createdOn = DateGenerator.getDateFromString("2021-09-08 22:22:22");
-        Date updatedOn= DateGenerator.getDateFromString("2021-09-08 22:22:22");
-
-        Department d1 =  new Department("Dept1", Status.ACTIVE);
-        Department d2 = new Department("Dept2",Status.ACTIVE);
-        List<Department> departments = new ArrayList<>();
-        d1.setId(1L);
-        d2.setId(2L);
-
-        d1.setCreatedOn(createdOn);
-        d1.setUpdatedOn(updatedOn);
-        d2.setCreatedOn(createdOn);
-        d2.setUpdatedOn(updatedOn);
-
-        departments.add(d1);
-        departments.add(d2);
-
-        Mockito.when(departmentRepository.findAll()).thenReturn(departments);
-        Mockito.when(departmentService.getAllDepartments()).thenReturn(departments);
-
-
-        mockMvc.perform(MockMvcRequestBuilders
-                .get("/departments")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$",hasSize(2)))
-                .andExpect(jsonPath("$[1].name").value("Dept2"));
-    }
 
     @Test
     public void saveCourse_success() throws Exception{
@@ -89,29 +60,43 @@ public class DepartmentControllerTest {
         d1.setCreatedOn(createdOn);
         d1.setUpdatedOn(updatedOn);
 
-        CompletableFuture<Department> completedFuture = CompletableFuture.completedFuture(d1);
-        DepartmentPOJO departmentPOJO = new DepartmentPOJO("Dept1");
+        Course course = new Course();
+        course.setStatus(Status.ACTIVE);
+        course.setCreatedOn(createdOn);
+        course.setFee(30000L);
+        course.setName("Course1");
+        course.setUpdatedOn(updatedOn);
+        course.setInstructor(null);
+        course.setDepartment(d1);
+        course.setId(1L);
+        course.setSemesterList(null);
 
-        Mockito.when(departmentRepository.save(d1)).thenReturn(d1);
-        Mockito.when(departmentService.saveDepartment(ArgumentMatchers.any())).thenReturn(completedFuture);
+
+        CoursePOJO coursePOJO = new CoursePOJO();
+        coursePOJO.setFee(30000L);
+        coursePOJO.setName("Course1");
+        coursePOJO.setStatus(Status.ACTIVE);
+        coursePOJO.setDeptId(1L);
+        coursePOJO.setInstId(1L);
+
+        Mockito.when(courseRepository.save(course)).thenReturn(course);
+        Mockito.when(courseService.saveCourse(ArgumentMatchers.any())).thenReturn(course);
+
+        //TODO: Why argument Matachers.any and not COurseOJO
 
 
-        List<DepartmentPOJO> list = new ArrayList<>();
-        list.add(departmentPOJO);
-
-
-
-        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.post("/departments")
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.post("/courses")
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .content(this.om.writeValueAsString(list));
+                .content(this.om.writeValueAsString(coursePOJO));
 
         mockMvc.perform(mockRequest)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", notNullValue()))
-                .andExpect(jsonPath("$[0].name").value("Dept1"));
+                .andExpect(jsonPath("$.name").value("Course1"));
 
     }
 
 
 }
+
